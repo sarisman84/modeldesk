@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Modeldesk · Local inference</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script defer src="/app.js"></script>
+  </head>
+  <body>
+    <header>
+      <div class="brand"><b>◫</b> Modeldesk</div>
+      <span class="tag">LOCAL WORKSPACE</span>
+    </header>
+    <main>
+      <nav aria-label="Workspace">
+        <button data-tab="runtime">Runtime</button
+        ><button data-tab="files">Model files</button
+        ><button data-tab="profiles">Profiles</button>
+      </nav>
+      <p id="notice" role="status"></p>
+      <section id="runtime">
+        <small>WORKSPACE / MONITOR</small>
+        <h1>Runtime overview</h1>
+        <p>Live status from inference servers on this machine.</p>
+        <div id="servers"></div>
+        <details>
+          <summary>Connect an existing server</summary>
+          <form id="server">
+            <label
+              >Name<input
+                name="Name"
+                required
+                placeholder="Local inference" /></label
+            ><label
+              >Runtime<select name="Engine">
+                <option value="cpp">llama.cpp</option>
+                <option value="swap">llama-swap</option>
+              </select></label
+            ><label
+              >Local HTTP address<input
+                name="URL"
+                required
+                value="http://127.0.0.1:8080" /></label
+            ><label
+              >Editable config path (optional)<input
+                name="Config"
+                placeholder="Absolute path to YAML or preset INI" /></label
+            ><button>Connect</button>
+          </form>
+        </details>
+      </section>
+      <section id="files" hidden>
+        <small>WORKSPACE / STORAGE</small>
+        <h1>Model files</h1>
+        <p>
+          Import weights in place or download a GGUF from a public repository.
+        </p>
+        <div id="weights"></div>
+        <details open>
+          <summary>Import a local GGUF</summary>
+          <form id="import">
+            <label
+              >Absolute file path<input
+                name="Path"
+                required
+                placeholder="Path to model.gguf" /></label
+            ><button>Import file</button>
+          </form>
+        </details>
+        <details>
+          <summary>Download from Hugging Face</summary>
+          <form id="catalog">
+            <label
+              >Repository link or owner/name<input
+                name="Repo"
+                required
+                placeholder="https://huggingface.co/owner/repository" /></label
+            ><button>List GGUF files</button>
+          </form>
+          <div id="choices"></div>
+        </details>
+      </section>
+      <section id="profiles" hidden>
+        <small>WORKSPACE / CONFIGURATION</small>
+        <h1>Run profiles</h1>
+        <p>Share one set of weights across named configurations.</p>
+        <div id="presets"></div>
+        <details id="profileEditor">
+          <summary>Create or edit a profile</summary>
+          <form id="profile">
+            <input type="hidden" name="ID" /><label
+              >Profile name<input name="Name" required /></label
+            ><label>Model file<select name="File" required></select></label
+            ><label
+              >Runtime<select name="Engine">
+                <option value="cpp">llama.cpp</option>
+                <option value="swap">llama-swap</option>
+              </select></label
+            ><label
+              >Port<input
+                type="number"
+                name="Port"
+                min="1"
+                max="65535"
+                required
+                value="8081" /></label
+            ><label
+              >Context length (0 = default)<input
+                type="number"
+                name="Context"
+                min="0"
+                value="0" /></label
+            ><label
+              >CPU threads (0 = default)<input
+                type="number"
+                name="Threads"
+                min="0"
+                value="0" /></label
+            ><label
+              >GPU layers<input
+                type="number"
+                name="GPU"
+                min="0"
+                value="0" /></label
+            ><label
+              >llama-server executable<input
+                name="Binary"
+                placeholder="llama-server from PATH" /></label
+            ><label
+              >llama-swap executable<input
+                name="SwapBinary"
+                placeholder="llama-swap from PATH" /></label
+            ><label class="wide"
+              >Extra llama-server arguments (one argument per line)<textarea
+                name="Args"
+                rows="3"
+              ></textarea></label
+            ><button>Save profile</button
+            ><button type="reset" class="quiet">Clear</button>
+          </form>
+        </details>
+      </section>
+    </main>
+    <dialog id="editor">
+      <h2>External configuration</h2>
+      <p id="configPath"></p>
+      <label>Original<textarea id="original" readonly></textarea></label
+      ><label>Proposed configuration<textarea id="proposed"></textarea></label>
+      <pre id="preview" hidden></pre>
+      <div class="actions">
+        <button id="review">Preview changes</button
+        ><button id="apply" hidden>Back up and apply</button
+        ><button id="close" class="quiet">Close</button>
+      </div>
+      <p id="configMessage" role="status"></p>
+    </dialog>
+  </body>
+</html>

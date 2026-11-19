@@ -1,0 +1,11 @@
+/dist/
+/result
+/modeldesk
+*.exe
+*.test
+*.gguf
+.direnv/
+.env*
+*.key
+*.pem
+*.log
